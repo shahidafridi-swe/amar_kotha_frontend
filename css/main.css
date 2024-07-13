@@ -1,0 +1,17 @@
+a {
+    text-decoration: None;
+    color: black;
+    
+}
+
+.article:hover{
+    border: 2px solid goldenrod;
+    background: rgba(150, 150, 148, 0.201);
+}
+
+.article-headline:hover{
+    color: goldenrod;
+}
+.form-label {
+    font-weight: bold;
+}
