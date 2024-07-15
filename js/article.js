@@ -1,8 +1,9 @@
 const loadCatgory = () => {
-    const parent = document.getElementById("category")
+    const parent = document.getElementById("category_option")
     fetch("http://127.0.0.1:8000/categories/")
     .then((res)=> res.json())
     .then((data)=> {
+        displayCategory(data);
         data.forEach(element => {
             // console.log(element)
             const option = document.createElement("option")
@@ -10,9 +11,26 @@ const loadCatgory = () => {
             option.innerText = element.name
             parent.appendChild(option)
         });
+        
     })
 };
 loadCatgory();
+
+const displayCategory = (categories) => {
+    const parent = document.getElementById("categories")
+    fetch("http://127.0.0.1:8000/categories/")
+    .then((res)=> res.json())
+    .then((data)=> {
+        data.forEach(element => {
+            const p = document.createElement("p")
+            p.innerHTML = `
+                <p class="btn btn-outline-dark m-0 w-100" onclick="loadArticles('${element.id}')">${element.name}</p>
+            
+            `
+            parent.appendChild(p);
+        })
+    })
+}
 
 
 const handleAddArticle = (event) => {
@@ -42,4 +60,35 @@ const handleAddArticle = (event) => {
         alert("Article added ");
         console.log(data);
     })
+}
+
+const loadArticles = (value) => {
+    document.getElementById("articles-sector").innerHTML = ''
+    fetch(`http://127.0.0.1:8000/articles/?category_id=${value}`)
+    // fetch("http://127.0.0.1:8000/articles/")
+    .then((res) => res.json())
+    .then((data) => displayArticles(data))
+    .catch((err) => console.log(err))
+  };
+
+loadArticles('');
+
+const displayArticles = (articles) => {
+  const parent = document.getElementById("articles-sector")
+
+  articles.forEach(article => {
+    const div = document.createElement("div")
+    div.innerHTML = `
+    
+      <div class="article border rounded p-3">
+        <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
+            <h3 class="fw-bold">${article.headline}</h3>
+        </a>
+        <p>${article.body.slice(0,150)}</p>
+      </div>
+    
+    `
+    parent.appendChild(div)
+  });
+
 }

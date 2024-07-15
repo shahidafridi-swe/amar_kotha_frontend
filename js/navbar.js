@@ -5,18 +5,44 @@ fetch("../navbar.html")
 
     let navbarElement = document.getElementById("navbar-element")
     const token = localStorage.getItem("token")
-    if (token) {
-        navbarElement.innerHTML += `
-            
+    const user_id = localStorage.getItem("user_id")
+    if (user_id){
+        fetch(`http://127.0.0.1:8000/users/list/${user_id}/`)
+        .then((res)=> res.json())
+        .then((user)=> {
+            if(user.account.user_type == "Editor"){
+                navbarElement.innerHTML += `
+                
             <li class="nav-item">
-            <a class="nav-link "  href="./index.html">Profile</a>
+                <a class="nav-link "  href="./add_article.html">Add Article</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link "  href="./profile.html">Profile</a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" onclick="handleLogout()" >Logout</a>
             </li>
-        
-        `
+            `
+            }
+            else{
+                navbarElement.innerHTML += `
+            
+                <li class="nav-item">
+                <a class="nav-link "  href="./profile.html">Profile</a>
+                </li>
+    
+                <li class="nav-item">
+                    <a class="nav-link" onclick="handleLogout()" >Logout</a>
+                </li>
+            
+            `
+            }
+        })
+    }
+
+    if (token) {
+       
     }
     else {
         navbarElement.innerHTML += `
@@ -31,3 +57,12 @@ fetch("../navbar.html")
         `
     }
 })
+
+const loadUser = () => {
+    const user_id = localStorage.getItem("user_id")
+    fetch(`http://127.0.0.1:8000/users/list/${user_id}/`)
+    .then((res)=> res.json())
+    .then((user)=> console.log(user))
+
+}
+loadUser()

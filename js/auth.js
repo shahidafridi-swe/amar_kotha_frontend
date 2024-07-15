@@ -20,6 +20,7 @@ const handleLogin = (event) => {
 
         console.log(data);
         localStorage.setItem("token",data.token)
+        localStorage.setItem("user_id",data.user_id)
         document.getElementById("login-loading-message").innerText= ""
         window.location.href = "index.html"        
         if (data.error) {
@@ -88,6 +89,8 @@ const handleLogout = () => {
         console.log(data);
        
         localStorage.removeItem("token")
+        localStorage.removeItem("user_id")
+
         window.location.href ="./login.html"
     })
     .catch((err)=> console.log("logout error:: ",err))
