@@ -15,6 +15,9 @@
     <!-- Navbar Part End -->
 
     <!-- Register Form Part Start -->
+    <h3 id="register-success-message" class="container mt-5"></h3>
+    <h3 id="register-loading-message" class="container mt-5"></h3>
+
     <div class="col-md-7 m-auto  border border-dark rounded mt-5">
         <div class="bg-dark rounded p-2">
             <h3 class="text-white text-center m-0">Register From</h3>
@@ -56,9 +59,8 @@
                     <div class="mb-3">
                       <label for="user_type" class="form-label">User Type</label>
                       <select required class="form-select" aria-label="Default select example" id="user_type" name="user_type">
-                        <option selected>User Type</option>
-                        <option value="Editor">Editor</option>
                         <option value="Viewer">Viewer</option>
+                        <option value="Editor">Editor</option>
                       </select>
                     </div>
                   </div>

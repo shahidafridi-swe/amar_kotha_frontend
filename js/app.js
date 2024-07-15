@@ -6,4 +6,4 @@ const loadArticles = () => {
     .catch((err) => console.log(err))
   };
 
-loadArticles();
+// loadArticles();
