@@ -1,6 +1,7 @@
 const loadCatgory = () => {
     const parent = document.getElementById("category_option")
     fetch("https://amar-kotha.onrender.com/categories/")
+    // fetch("http://127.0.0.1:8000/categories/")
     .then((res)=> res.json())
     .then((data)=> {
         displayCategory(data);
@@ -19,6 +20,7 @@ loadCatgory();
 const displayCategory = (categories) => {
     const parent = document.getElementById("categories")
     fetch("https://amar-kotha.onrender.com/categories/")
+    // fetch("http://127.0.0.1:8000/categories/")
     .then((res)=> res.json())
     .then((data)=> {
         data.forEach(element => {
@@ -48,6 +50,7 @@ const handleAddArticle = (event) => {
     console.log("---", articleData)
 
     fetch("https://amar-kotha.onrender.com/articles/", {
+    // fetch("http://127.0.0.1:8000/articles/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -64,6 +67,7 @@ const handleAddArticle = (event) => {
 
 const loadArticles = (value) => {
     fetch(`https://amar-kotha.onrender.com/categories/${value}/`)
+    // fetch(`http://127.0.0.1:8000/categories/${value}/`)
     .then((res)=>res.json())
     .then((data)=> {
         document.getElementById("category-title").innerText = data.name;
@@ -73,7 +77,8 @@ const loadArticles = (value) => {
     document.getElementById("nodata").innerText = ''
     document.getElementById("articles-sector").innerHTML = ''
     fetch(`https://amar-kotha.onrender.com/articles/?category_id=${value}`)
-    // fetch("http://127.0.0.1:8000/articles/")
+    // fetch(`http://127.0.0.1:8000/articles/?category_id=${value}`)
+    fetch("http://127.0.0.1:8000/articles/")
     .then((res) => res.json())
     .then((data) => {
 

@@ -13,7 +13,6 @@ const displayProfile = () => {
             <h5>User Type: ${user.account.user_type}</h5>
             <h5>Phone: ${user.account.phone}</h5>
 
-        
         `
     })
 
