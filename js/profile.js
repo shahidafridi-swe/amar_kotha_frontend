@@ -2,7 +2,7 @@ const displayProfile = () => {
 
     const user_id = localStorage.getItem("user_id")
     const parent = document.getElementById("profile-info")
-    fetch(`http://127.0.0.1:8000/users/list/${user_id}/`)
+    fetch(`https://amar-kotha.onrender.com/users/list/${user_id}/`)
     .then((res)=> res.json())
     .then((user)=> {
         parent.innerHTML = `

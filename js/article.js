@@ -1,6 +1,6 @@
 const loadCatgory = () => {
     const parent = document.getElementById("category_option")
-    fetch("http://127.0.0.1:8000/categories/")
+    fetch("https://amar-kotha.onrender.com/categories/")
     .then((res)=> res.json())
     .then((data)=> {
         displayCategory(data);
@@ -18,7 +18,7 @@ loadCatgory();
 
 const displayCategory = (categories) => {
     const parent = document.getElementById("categories")
-    fetch("http://127.0.0.1:8000/categories/")
+    fetch("https://amar-kotha.onrender.com/categories/")
     .then((res)=> res.json())
     .then((data)=> {
         data.forEach(element => {
@@ -47,7 +47,7 @@ const handleAddArticle = (event) => {
     }
     console.log("---", articleData)
 
-    fetch("http://127.0.0.1:8000/articles/", {
+    fetch("https://amar-kotha.onrender.com/articles/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -58,16 +58,34 @@ const handleAddArticle = (event) => {
     .then((res)=> res.json())
     .then((data)=> {
         alert("Article added ");
-        console.log(data);
+        window.location.href = "./index.html"
     })
 }
 
 const loadArticles = (value) => {
+    fetch(`https://amar-kotha.onrender.com/categories/${value}/`)
+    .then((res)=>res.json())
+    .then((data)=> {
+        document.getElementById("category-title").innerText = data.name;
+    })
+
+
+    document.getElementById("nodata").innerText = ''
     document.getElementById("articles-sector").innerHTML = ''
-    fetch(`http://127.0.0.1:8000/articles/?category_id=${value}`)
+    fetch(`https://amar-kotha.onrender.com/articles/?category_id=${value}`)
     // fetch("http://127.0.0.1:8000/articles/")
     .then((res) => res.json())
-    .then((data) => displayArticles(data))
+    .then((data) => {
+
+        if(data.length>0){
+            displayArticles(data);
+
+          }
+          else{
+              document.getElementById("nodata").innerText = 'Sorry there are no articls for this category'
+            document.getElementById("articles-sector").innerHTML = ""
+          }
+    })
     .catch((err) => console.log(err))
   };
 
@@ -75,7 +93,7 @@ loadArticles('');
 
 const displayArticles = (articles) => {
   const parent = document.getElementById("articles-sector")
-
+    
   articles.forEach(article => {
     const div = document.createElement("div")
     div.innerHTML = `

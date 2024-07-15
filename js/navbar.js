@@ -7,7 +7,7 @@ fetch("../navbar.html")
     const token = localStorage.getItem("token")
     const user_id = localStorage.getItem("user_id")
     if (user_id){
-        fetch(`http://127.0.0.1:8000/users/list/${user_id}/`)
+        fetch(`https://amar-kotha.onrender.com/users/list/${user_id}/`)
         .then((res)=> res.json())
         .then((user)=> {
             if(user.account.user_type == "Editor"){
@@ -60,7 +60,7 @@ fetch("../navbar.html")
 
 const loadUser = () => {
     const user_id = localStorage.getItem("user_id")
-    fetch(`http://127.0.0.1:8000/users/list/${user_id}/`)
+    fetch(`https://amar-kotha.onrender.com/users/list/${user_id}/`)
     .then((res)=> res.json())
     .then((user)=> console.log(user))
 

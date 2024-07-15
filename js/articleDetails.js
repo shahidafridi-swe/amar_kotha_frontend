@@ -1,7 +1,7 @@
 const getParams = () => {
     const param = new URLSearchParams(window.location.search).get("articleId");
     console.log(param)
-    fetch(`http://127.0.0.1:8000/articles/${param}`)
+    fetch(`https://amar-kotha.onrender.com/articles/${param}`)
     .then((res)=> res.json())
     .then((data)=> displayArticleDetails(data))
 
@@ -17,6 +17,15 @@ const displayArticleDetails = (article) => {
     console.log("ratings--",ratings)
     const averageRating = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "No ratings";
     console.log("averageRating--",ratings)
+    const createdAt = new Date(article.created_at).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
     const user_id = localStorage.getItem("user_id")
     
 
@@ -31,7 +40,7 @@ const displayArticleDetails = (article) => {
                 <p>Category: ${article.category}</p>
                 </div>
                 <div class="col-md-4">
-                <p>Created: ${article.created_at}</p>
+                <p>Published: ${createdAt}</p>
                 </div>
                 <div class="col-md-4">
                 <p>Rating: ${averageRating} out of 4  </p>
@@ -46,7 +55,7 @@ const displayArticleDetails = (article) => {
     
     `
     if (user_id){
-        fetch(`http://127.0.0.1:8000/users/list/${user_id}/`)
+        fetch(`https://amar-kotha.onrender.com/users/list/${user_id}/`)
         .then((res)=> res.json())
         .then((user)=> {
             const isEditor = user.account.user_type === "Editor";
@@ -78,7 +87,7 @@ const updateArticle = (event) => {
         body : formData.get('edit_body'),
     }
 
-    fetch(`http://127.0.0.1:8000/articles/${param}/`, {
+    fetch(`https://amar-kotha.onrender.com/articles/${param}/`, {
         method: "PUT",
         headers: {
             "Content-Type" : "application/json",
@@ -101,7 +110,7 @@ const updateArticle = (event) => {
 const deleteArticle = () =>  {
     const param = new URLSearchParams(window.location.search).get("articleId");
     const token = localStorage.getItem("token")
-    fetch(`http://127.0.0.1:8000/articles/${param}/`, {
+    fetch(`https://amar-kotha.onrender.com/articles/${param}/`, {
         method: "DELETE",
         headers: {
             "Content-Type" : "application/json",
@@ -128,7 +137,7 @@ const handleAddRating = (event) => {
         user: userId,
     };
 
-    fetch("http://127.0.0.1:8000/rating/", {
+    fetch("https://amar-kotha.onrender.com/rating/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

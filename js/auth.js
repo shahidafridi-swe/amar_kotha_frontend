@@ -8,7 +8,7 @@ const handleLogin = (event) => {
         password: formData.get("password"),
     };
     console.log(loginData)
-    fetch("http://127.0.0.1:8000/users/login/", {
+    fetch("https://amar-kotha.onrender.com/users/login/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const handleRegister = (event) => {
         // image: formData.get("profile_image") 
     };
     console.log(registerData)
-    fetch("http://127.0.0.1:8000/users/register/", {
+    fetch("https://amar-kotha.onrender.com/users/register/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const handleRegister = (event) => {
 const handleLogout = () => {
     const token = localStorage.getItem('token')
 
-    fetch("http://127.0.0.1:8000/users/logout/", {
+    fetch("https://amar-kotha.onrender.com/users/logout/", {
         method : "POST",
         headers: {
             "Content-Type": "application/json",
