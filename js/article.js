@@ -57,7 +57,7 @@ const handleAddArticle = (event) => {
     })
     .then((res)=> res.json())
     .then((data)=> {
-        alert("Article added ");
+        alert("Article added successfully !!!");
         window.location.href = "./index.html"
     })
 }

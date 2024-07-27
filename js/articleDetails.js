@@ -74,6 +74,45 @@ const displayArticleDetails = (article) => {
     document.getElementById("edit_body").value = article.body
 }
 
+
+
+const displayTwoArticles = () => {
+    const param = new URLSearchParams(window.location.search).get("articleId");
+    console.log(param)
+    fetch(`https://amar-kotha.onrender.com/articles/${param}`)
+    .then((res)=> res.json())
+    .then((data)=> {
+        const category = data.category;
+        fetch(`https://amar-kotha.onrender.com/articles/?category_id=${category}`)
+        .then((res)=>res.json())
+        .then((articles)=> {
+            console.log("articles ---" , articles)
+            const filteredArticles = articles.filter(article => article.id != param);
+            const lastTwoArticles = filteredArticles.slice(-2);
+            console.log("-----", articles, param);
+            const parent = document.getElementById("two-articles");
+            lastTwoArticles.forEach(article => {
+                const div = document.createElement("div");
+                div.classList.add("col-md-6");
+                div.innerHTML = `
+                    <div class="article border rounded p-3">
+                        <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
+                            <h3 class="fw-bold">${article.headline}</h3>
+                        </a>
+                        <p>${article.body.slice(0,150)}</p>
+                    </div>
+                `;
+                parent.appendChild(div);
+            });
+            
+        })
+    })
+}
+displayTwoArticles();
+
+
+
+
 const updateArticle = (event) => {
     event.preventDefault();
     const param = new URLSearchParams(window.location.search).get("articleId");
