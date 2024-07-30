@@ -9,14 +9,11 @@ const getParams = () => {
 getParams();
 
 const displayArticleDetails = (article) => {
-    const parent = document.getElementById("article-details")
-    console.log(article)
+    const parent = document.getElementById("article-details");
+    const ratingSection = document.getElementById("rating-section");
 
-    const ratings = article.ratings;
-    console.log("article--",article)
-    console.log("ratings--",ratings)
-    const averageRating = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "No ratings";
-    console.log("averageRating--",ratings)
+    console.log("article--", article);
+
     const createdAt = new Date(article.created_at).toLocaleString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -26,54 +23,73 @@ const displayArticleDetails = (article) => {
         second: '2-digit',
         hour12: true
     });
-    const user_id = localStorage.getItem("user_id")
-    
+    const user_id = localStorage.getItem("user_id");
 
-    parent.innerHTML = `
-    
-    <div class="border border-dark rounded ">
-          <div class="bg-dark-subtle p-3 rounded">
-            <h3 class="fw-bold">${article.headline}</h3>
-            <hr>
-            <div class="row  text-dark ">
-                <div class="col-md-4">
-                <p>Category: ${article.category}</p>
+    fetch(`https://amar-kotha.onrender.com/categories/${article.category}/`)
+        .then((res) => res.json())
+        .then((category) => {
+            parent.innerHTML = `
+                <div class="border border-dark rounded ">
+                    <div class="bg-dark-subtle p-3 rounded">
+                        <h3 class="fw-bold">${article.headline}</h3>
+                        <hr>
+                        <div class="row text-dark ">
+                            <div class="col-md-4">
+                                <p>Category: ${category.name}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Published: ${createdAt}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Rating: ${article.average_rating ?? 0} out of 4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="p-3">${article.body}</p>
                 </div>
-                <div class="col-md-4">
-                <p>Published: ${createdAt}</p>
-                </div>
-                <div class="col-md-4">
-                <p>Rating: ${averageRating} out of 4  </p>
-                </div>
-            </div>
-          </div>
-          
-          <p class="p-3">
-            ${article.body}
-          </p>
-        </div>
-    
-    `
-    if (user_id){
-        fetch(`https://amar-kotha.onrender.com/users/list/${user_id}/`)
-        .then((res)=> res.json())
-        .then((user)=> {
-            const isEditor = user.account.user_type === "Editor";
-            const isViewer = user.account.user_type === "Viewer";
-            if (isEditor) {
-                parent.innerHTML += `
-                <div class="p-2 border border-dark bg-dark-subtle">
-                     <button class="btn px-5 mx-2 btn-outline-dark" id="edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
-                    <button class="btn px-5 mx-2 btn-outline-danger" id="delete-btn" onclick="deleteArticle()" >Delete</button>
-                </div>
-                `;
+            `;
+            ratingSection.style.display = 'none';
+
+            if (user_id) {
+                fetch(`https://amar-kotha.onrender.com/users/list/${user_id}/`)
+                    .then((res) => res.json())
+                    .then((user) => {
+                        const isEditor = user.account.user_type === "Editor";
+                        const isViewer = user.account.user_type === "Viewer";
+
+                        if (isEditor) {
+                            parent.innerHTML += `
+                                <div class="p-2 border border-dark bg-dark-subtle">
+                                    <button class="btn px-5 mx-2 btn-outline-dark" id="edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
+                                    <button class="btn px-5 mx-2 btn-outline-danger" id="delete-btn" onclick="deleteArticle()">Delete</button>
+                                </div>
+                            `;
+                            ratingSection.style.display = 'none';
+                        } else if (isViewer) {
+                            fetch("https://amar-kotha.onrender.com/rating/")
+                            .then((res)=>res.json())
+                            .then((ratingList)=>{
+                                console.log(ratingList);
+                                const userRating = ratingList.find(rating => rating.article == article.id && rating.user == user_id);
+
+                                if (userRating) {
+                                    document.getElementById("rating-message").innerHTML = `
+                                    <h5>You have already rated this article: ${userRating.rating} out of 4</h5>
+                                    
+                                    `
+                                }
+                                else{
+                                    ratingSection.style.display = 'block';
+                                }
+                            })
+                        }
+                    });
             }
-        })
-    }
-    document.getElementById("edit_headline").value = article.headline
-    document.getElementById("edit_body").value = article.body
-}
 
+            document.getElementById("edit_headline").value = article.headline;
+            document.getElementById("edit_body").value = article.body;
+        });
+};
 
 
 const displayTwoArticles = () => {
@@ -86,10 +102,10 @@ const displayTwoArticles = () => {
         fetch(`https://amar-kotha.onrender.com/articles/?category_id=${category}`)
         .then((res)=>res.json())
         .then((articles)=> {
-            console.log("articles ---" , articles)
+            // console.log("articles ---" , articles)
             const filteredArticles = articles.filter(article => article.id != param);
             const lastTwoArticles = filteredArticles.slice(-2);
-            console.log("-----", articles, param);
+            // console.log("-----", articles, param);
             const parent = document.getElementById("two-articles");
             lastTwoArticles.forEach(article => {
                 const div = document.createElement("div");
@@ -175,7 +191,7 @@ const handleAddRating = (event) => {
         rating: rating,
         user: userId,
     };
-
+    console.log("rate---> ",ratingData)
     fetch("https://amar-kotha.onrender.com/rating/", {
         method: "POST",
         headers: {

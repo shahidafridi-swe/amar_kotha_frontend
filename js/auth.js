@@ -1,13 +1,14 @@
 const handleLogin = (event) => {
     event.preventDefault();
-    document.getElementById("login-loading-message").innerText= "Loading..."
+    document.getElementById("login-loading-message").innerText = "Loading...";
+    document.getElementById("login-error-message").innerText = "";
     const form = document.getElementById("login-form");
-    const formData  = new FormData(form);
+    const formData = new FormData(form);
     const loginData = {
         username: formData.get("username"),
         password: formData.get("password"),
     };
-    console.log(loginData)
+    console.log(loginData);
     fetch("https://amar-kotha.onrender.com/users/login/", {
         method: "POST",
         headers: {
@@ -17,20 +18,22 @@ const handleLogin = (event) => {
     })
     .then((res) => res.json())
     .then((data) => {
-
         console.log(data);
-        localStorage.setItem("token",data.token)
-        localStorage.setItem("user_id",data.user_id)
-        document.getElementById("login-loading-message").innerText= ""
-        window.location.href = "index.html"        
         if (data.error) {
-           
-        } else {
-            // window.location.href = "index.html";
+            throw new Error(data.error);
         }
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user_id", data.user_id);
+        document.getElementById("login-loading-message").innerText = "";
+        window.location.href = "index.html";
     })
-    .catch((err) => console.log("error::",err))
+    .catch((err) => {
+        console.error("error::", err);
+        document.getElementById("login-loading-message").innerText = "";
+        document.getElementById("login-error-message").innerText = "Invalid username or password. Please try again.";
+    });
 };
+
 
 const handleRegister = (event) => {
     event.preventDefault()

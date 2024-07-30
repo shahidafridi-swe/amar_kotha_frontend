@@ -21,7 +21,7 @@ fetch("../navbar.html")
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" onclick="handleLogout()" >Logout</a>
+                <a class="nav-link" onclick="handleLogout()"  href="#" >Logout</a>
             </li>
             `
             }
@@ -33,7 +33,7 @@ fetch("../navbar.html")
                 </li>
     
                 <li class="nav-item">
-                    <a class="nav-link" onclick="handleLogout()" >Logout</a>
+                    <a class="nav-link"  onclick="handleLogout()"  href="#" >Logout</a>
                 </li>
             
             `

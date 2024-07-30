@@ -15,21 +15,22 @@
     <!-- Navbar Part End -->
 
     <!-- Login Form Part Start -->
-    <h3 id="login-success-message" class="container mt-5"></h3>
-    <h3 id="login-loading-message" class="container mt-5"></h3>
-    <div class="col-md-4 m-auto  border border-dark rounded mt-5">
+    <h3 id="login-success-message" class="container "></h3>
+    <h3 id="login-loading-message" class="container"></h3>
+    <h3 id="login-error-message" class="container "></h3>
+    <div class="col-md-4 m-auto  border border-dark rounded mb-5">
         <div class="bg-dark rounded p-2">
-            <h3 class="text-white text-center m-0">Login From</h3>
+            <h3 class="text-white text-center m-0">Login Form</h3>
         </div>
         <div class="p-3 bg-dark-subtle rounded">
             <form id="login-form" onsubmit="handleLogin(event)" >
                 <div class="mb-3">
                   <label for="username" class="form-label">Username</label>
-                  <input type="text" name="username" class="form-control border border-warning" id="username" >
+                  <input type="text" name="username" class="form-control border border-warning" id="username" required>
                 </div>
                 <div class="mb-3">
                   <label for="password" class="form-label">Password</label>
-                  <input type="password" name="password" class="form-control border border-warning" id="password">
+                  <input type="password" name="password" class="form-control border border-warning" id="password" required>
                 </div>
                 
                 <button type="submit" class="btn btn-outline-dark p-2 my-2 w-100 fw-bold">LOGIN</button>
@@ -40,14 +41,7 @@
     </div>
     <!-- Login Form Part End -->
 
-
-
-
-
-
-
-
-    <footer class="bg-dark">
+    <footer class="bg-dark mt-5">
       <div class="container p-3">
         <p class="text-center text-white">Copyright © 2024 amar-kotha</p>
       </div>

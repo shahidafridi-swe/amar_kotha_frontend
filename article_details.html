@@ -16,35 +16,33 @@
 
     <!-- Article Part Start -->
     <section id="article-section" class="container py-4">
-      <div id="article-details">
-
+      <div id="article-details"></div>
+      <div id="rating-message" class="border border-dark rounded bg-dark-subtle p-3">
+        
       </div>
-      
       <div id="rating-section">
         <div class="border border-dark rounded bg-dark-subtle p-3">
-            <form id="add-rating" onsubmit="handleAddRating(event)">
-                <label for="rating" class="form-label">Give Your Rating For This Article</label>
-                <div class="input-group">
-                    <select class="form-select" id="rating" aria-label="Example select with button addon" required>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-                        <option value="0">0</option>
-                    </select>
-                    <button class="btn btn-outline-dark" type="submit">Submit Your Rating</button>
-                </div>
-            </form>
+          <form id="add-rating" onsubmit="handleAddRating(event)">
+            <label for="rating" class="form-label">Give Your Rating For This Article</label>
+            <div class="input-group">
+              <select class="form-select" id="rating" aria-label="Example select with button addon" required>
+                <option value=4>4</option>
+                <option value=3>3</option>
+                <option value=2>2</option>
+                <option value=1>1</option>
+                <option value=0>0</option>
+              </select>
+              <button class="btn btn-outline-dark" type="submit">Submit Your Rating</button>
+            </div>
+          </form>
         </div>
-    </div>
-        
-<hr>
-<hr>
-      <div class="row" id="two-articles">
-        
       </div>
-        
+      
+      <hr>
+      <hr>
+      <div class="row" id="two-articles"></div>
     </section>
+    
     <!-- Article Part End -->
 
 <!-- Modal -->
