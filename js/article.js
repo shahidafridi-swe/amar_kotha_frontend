@@ -77,6 +77,7 @@ const loadArticles = (value) => {
     .then((data) => {
 
         if(data.length>0){
+            data.sort((a, b) => b.average_rating - a.average_rating);
             displayArticles(data);
 
           }
