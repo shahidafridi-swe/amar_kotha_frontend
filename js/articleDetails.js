@@ -111,12 +111,12 @@ const displayTwoArticles = () => {
                 const div = document.createElement("div");
                 div.classList.add("col-md-6");
                 div.innerHTML = `
+                <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
                     <div class="article border rounded p-3">
-                        <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
-                            <h3 class="fw-bold">${article.headline}</h3>
-                        </a>
+                        <h3 class="fw-bold">${article.headline}</h3>
                         <p>${article.body.slice(0,150)}</p>
                     </div>
+                </a>
                 `;
                 parent.appendChild(div);
             });

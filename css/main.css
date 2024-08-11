@@ -14,15 +14,17 @@ a {
     color: black;
     
 }
+.article{
+  transition: 0.3s;
 
+}
 .article:hover{
-    border: 2px solid goldenrod;
-    background: rgba(150, 150, 148, 0.201);
+    background: black;
+    color: goldenrod;
+    transition: 0.3s;
 }
 
-.article-headline:hover{
-    color: goldenrod;
-}
+
 .form-label {
     font-weight: bold;
 }

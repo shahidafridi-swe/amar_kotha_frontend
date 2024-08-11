@@ -95,15 +95,36 @@ const displayArticles = (articles) => {
   const parent = document.getElementById("articles-sector")
     
   articles.forEach(article => {
+    const createdAt = new Date(article.created_at).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
     const div = document.createElement("div")
     div.innerHTML = `
     
-      <div class="article border rounded p-3">
-        <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
-            <h3 class="fw-bold">${article.headline}</h3>
-        </a>
-        <p>${article.body.slice(0,150)}</p>
-      </div>
+    <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
+        <div class="article border border-dark rounded p-3 my-2">
+        <h3 class="fw-bold">${article.headline}</h3>
+            <hr class="p-0 m-0"/>
+
+            <div class="row">
+                <div class="col-md-6">
+                <p class="p-0 m-0">Published: ${createdAt}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="p-0 m-0">Rating: ${article.average_rating ?? 0} out of 4</p>
+                </div>
+                </div>
+            <hr class="p-0 m-0"/>
+
+            <p class="mt-3">${article.body.slice(0,150)}...</p>
+        </div>
+    </a>
     
     `
     parent.appendChild(div)
