@@ -22,25 +22,26 @@
             <h3 class="text-white text-center m-0">Add An Article</h3>
         </div>
         <div class="p-3 bg-dark-subtle rounded">
-            <form id="add-article" onsubmit="handleAddArticle(event)" >
-                <div class="mb-3">
-                  <label for="headline" class="form-label">Article Headline</label>
-                  <input required type="text" name="headline" class="form-control" id="headline" >
-                </div>
-                <div class="mb-3">
-                    <label for="body" class="form-label">Article Body</label>
-                    <textarea required class="form-control" name="body" id="body" rows="5"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="category" class="form-label">Article Category</label>
-                    <select required id="category_option" name="category" class="form-select" aria-label="Default select example">
-                        
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-outline-dark p-2 my-2 w-100 fw-bold">SUBMIT</button>
-
-              </form>
+          <form id="add-article" onsubmit="handleAddArticle(event)" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="headline" class="form-label">Article Headline</label>
+                <input required type="text" name="headline" class="form-control" id="headline" >
+            </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">Article Body</label>
+                <textarea required class="form-control" name="body" id="body" rows="5"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Article Category</label>
+                <select required id="category_option" name="category" class="form-select" aria-label="Default select example"></select>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Article Image</label>
+                <input type="file" name="image" class="form-control" id="image" >
+            </div>
+            <button type="submit" class="btn btn-outline-dark p-2 my-2 w-100 fw-bold">SUBMIT</button>
+        </form>
+        
              
         </div>
     </div>

@@ -7,7 +7,6 @@ const getParams = () => {
 
 }
 getParams();
-
 const displayArticleDetails = (article) => {
     const parent = document.getElementById("article-details");
     const ratingSection = document.getElementById("rating-section");
@@ -28,25 +27,34 @@ const displayArticleDetails = (article) => {
     fetch(`https://amar-kotha.onrender.com/categories/${article.category}/`)
         .then((res) => res.json())
         .then((category) => {
+            console.log(article);
             parent.innerHTML = `
-                <div class="border border-dark rounded ">
-                    <div class="bg-dark-subtle p-3 rounded">
-                        <h3 class="fw-bold">${article.headline}</h3>
-                        <hr>
-                        <div class="row text-dark ">
-                            <div class="col-md-4">
-                                <p>Category: ${category.name}</p>
-                            </div>
-                            <div class="col-md-4">
-                                <p>Published: ${createdAt}</p>
-                            </div>
-                            <div class="col-md-4">
-                                <p>Rating: ${article.average_rating ?? 0} out of 4</p>
-                            </div>
-                        </div>
+                <div class="border border-dark rounded">
+          <div class="row">
+            <div class="col-md-5 pe-0">
+              ${article.image_url ? `<img src="${article.image_url}" alt="Article Image" class="w-100 rounded">` : `<img src="https://i.ibb.co/1MC5gDs/download.jpg" alt="Article Image" class="w-100 rounded">`}
+            </div>
+            <div class="col-md-7 ps-0 ">
+              <div class="bg-dark-subtle p-3 rounded">
+                <h3 class="fw-bold">${article.headline}</h3>
+                <hr>
+                <div class="row text-dark">
+                    <div class="col-md-4">
+                        <p>Category: ${category.name}</p>
                     </div>
-                    <p class="p-3">${article.body}</p>
+                    <div class="col-md-4">
+                        <p>Published: ${createdAt}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>Rating: ${article.average_rating ?? 0} out of 4</p>
+                    </div>
                 </div>
+            </div>
+            
+            <p class="p-3">${article.body}</p>
+            </div>
+          </div>
+        </div>
             `;
             ratingSection.style.display = 'none';
 
@@ -59,7 +67,7 @@ const displayArticleDetails = (article) => {
 
                         if (isEditor) {
                             parent.innerHTML += `
-                                <div class="p-2 border border-dark bg-dark-subtle">
+                                <div class="p-2 border border-dark bg-dark-subtle rounded">
                                     <button class="btn px-5 mx-2 btn-outline-dark" id="edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
                                     <button class="btn px-5 mx-2 btn-outline-danger" id="delete-btn" onclick="deleteArticle()">Delete</button>
                                 </div>
@@ -112,9 +120,16 @@ const displayTwoArticles = () => {
                 div.classList.add("col-md-6");
                 div.innerHTML = `
                 <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
-                    <div class="article border rounded p-3">
-                        <h3 class="fw-bold">${article.headline}</h3>
-                        <p>${article.body.slice(0,150)}</p>
+                    <div class="article border rounded">
+                        <div class="row">
+                            <div class="col-md-3">
+                            ${article.image_url ? `<img src="${article.image_url}" alt="Article Image" class="w-100 rounded">` : `<img src="https://i.ibb.co/1MC5gDs/download.jpg" alt="Article Image" class="w-100 rounded">`}
+                            </div>
+                            <div class="col-md-9  p-3">
+                                <h3 class="fw-bold">${article.headline}</h3>
+                                <p>${article.body.slice(0,150)}</p>
+                            </div>
+                        </div>
                     </div>
                 </a>
                 `;
@@ -128,39 +143,77 @@ displayTwoArticles();
 
 
 
-
-const updateArticle = (event) => {
+const updateArticle = async (event) => {
     event.preventDefault();
     const param = new URLSearchParams(window.location.search).get("articleId");
 
     const form = document.getElementById("update-article");
     const formData = new FormData(form);
-    const token = localStorage.getItem("token")
-    console.log(token)
-    const articleUpdateData = {
-        headline : formData.get('edit_headline'),
-        body : formData.get('edit_body'),
+    const token = localStorage.getItem("token");
+
+    // Upload the image to Imgbb first, if a new image is provided
+    const imageFile = formData.get('edit_image'); // Ensure your file input field has the name "edit_image"
+    let imageUrl = '';
+
+    if (imageFile && imageFile.size > 0) { // Check if a new image was selected
+        const imgFormData = new FormData();
+        imgFormData.append('image', imageFile);
+
+        try {
+            const imgbbResponse = await fetch('https://api.imgbb.com/1/upload?key=648e380c7b8d76ec81662ddc06d73ec5', {
+                method: 'POST',
+                body: imgFormData
+            });
+
+            const imgbbData = await imgbbResponse.json();
+            if (imgbbData.status === 200) {
+                imageUrl = imgbbData.data.url;
+            } else {
+                alert('Image upload failed!');
+                return;
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('Image upload failed!');
+            return;
+        }
     }
 
+    // Prepare the data for the update
+    const articleUpdateData = {
+        headline: formData.get('edit_headline'),
+        body: formData.get('edit_body'),
+        category: formData.get('edit_category'), // Assuming there's a category field in the edit form
+    };
+
+    // Only include the image URL if a new image was uploaded
+    if (imageUrl) {
+        articleUpdateData.image_url = imageUrl;
+    }
+
+    // Send the update request
     fetch(`https://amar-kotha.onrender.com/articles/${param}/`, {
         method: "PUT",
         headers: {
-            "Content-Type" : "application/json",
-            Authorization : `Token ${token}`
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`
         },
-        body : JSON.stringify(articleUpdateData),
+        body: JSON.stringify(articleUpdateData),
     })
-    .then((res)=> res.json())
+    .then((res) => res.json())
     .then((data) => {
-        console.log(data)
-        if (!data.error) { // Add a check to ensure the update was successful
-            window.location.reload(); // Reload the page
+        console.log(data);
+        if (!data.error) {
+            alert("Article updated successfully!");
+            window.location.reload(); // Reload the page after a successful update
         } else {
             console.error('Update failed:', data.error); // Handle errors if necessary
         }
-        
     })
-}
+    .catch(error => {
+        console.error('Error updating article:', error);
+    });
+};
 
 const deleteArticle = () =>  {
     const param = new URLSearchParams(window.location.search).get("articleId");
