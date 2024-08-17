@@ -31,7 +31,7 @@ const displayArticleDetails = (article) => {
             parent.innerHTML = `
                 <div class="border border-dark rounded">
           <div class="row">
-            <div class="col-md-5 pe-0">
+            <div class="col-md-5 pe-0 d-flex align-items-center">
               ${article.image_url ? `<img src="${article.image_url}" alt="Article Image" class="w-100 rounded">` : `<img src="https://i.ibb.co/1MC5gDs/download.jpg" alt="Article Image" class="w-100 rounded">`}
             </div>
             <div class="col-md-7 ps-0 ">
@@ -122,7 +122,7 @@ const displayTwoArticles = () => {
                 <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
                     <div class="article border rounded">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-flex align-items-center">
                             ${article.image_url ? `<img src="${article.image_url}" alt="Article Image" class="w-100 rounded">` : `<img src="https://i.ibb.co/1MC5gDs/download.jpg" alt="Article Image" class="w-100 rounded">`}
                             </div>
                             <div class="col-md-9  p-3">
