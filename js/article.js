@@ -67,7 +67,7 @@ const handleAddArticle = async (event) => {
         category: formData.get('category'),
         image_url: imageUrl
     };
-
+    console.log(articleData)
     fetch("https://amar-kotha.onrender.com/articles/", {
         method: "POST",
         headers: {
