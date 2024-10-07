@@ -41,3 +41,14 @@ a {
 .br-news:hover{
   color: goldenrod;
 }
+
+
+#rating-section {
+  display: none;
+}
+#rating-message {
+  display: none;
+}
+#review-section {
+  display: none;
+}

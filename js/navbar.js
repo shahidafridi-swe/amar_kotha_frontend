@@ -21,7 +21,7 @@ fetch("../navbar.html")
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white" onclick="handleLogout()"  href="#" >Logout</a>
+                <button class="nav-link text-white" onclick="handleLogout()"   >Logout</button>
             </li>
             `
             }
@@ -33,7 +33,7 @@ fetch("../navbar.html")
                 </li>
     
                 <li class="nav-item">
-                    <a class="nav-link text-white"  onclick="handleLogout()"  href="#" >Logout</a>
+                    <button class="nav-link text-white"  onclick="handleLogout()"  >Logout</button>
                 </li>
             
             `

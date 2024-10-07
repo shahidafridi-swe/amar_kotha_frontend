@@ -56,7 +56,7 @@ const displayArticleDetails = (article) => {
           </div>
         </div>
             `;
-            ratingSection.style.display = 'none';
+            
 
             if (user_id) {
                 fetch(`https://amar-kotha.onrender.com/users/list/${user_id}/`)
@@ -72,11 +72,12 @@ const displayArticleDetails = (article) => {
                                     <button class="btn px-5 mx-2 btn-danger" id="delete-btn" onclick="deleteArticle()">DELETE</button>
                                 </div>
                             `;
-                            ratingSection.style.display = 'none';
-                            document.getElementById("review-section").style.display = 'none';
-                            document.getElementById("rating-message").style.display = 'none';
+                            
+                            
 
                         } else if (isViewer) {
+                            document.getElementById("review-section").style.display = 'block';
+
                             fetch("https://amar-kotha.onrender.com/rating/")
                             .then((res)=>res.json())
                             .then((ratingList)=>{
@@ -84,6 +85,7 @@ const displayArticleDetails = (article) => {
                                 const userRating = ratingList.find(rating => rating.article == article.id && rating.user == user_id);
 
                                 if (userRating) {
+                                    document.getElementById("rating-message").style.display = 'block';
                                     document.getElementById("rating-message").innerHTML = `
                                     <h5>You have already rated this article: ${userRating.rating} out of 4</h5>
                                     
