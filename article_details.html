@@ -15,8 +15,8 @@
     <!-- Navbar Part End -->
 
     <!-- Article Part Start -->
-    <section id="article-section" class="container py-4">
-      <div id="article-details">
+    <section id="article-section" class="container  py-4">
+      <div id="article-details" class="bg-dark-subtle rounded">
         
       </div>
       <div id="rating-message" class="border border-dark rounded bg-dark-subtle p-3">
@@ -39,9 +39,41 @@
           </form>
         </div>
       </div>
+
+      <div id="review-section">
+        <div class="border border-dark rounded bg-dark-subtle p-3">
+          <div >
+            <form onsubmit="handleAddReview(event)" id="review-form">
+              <div class="mb-3">
+                <label for="review" class="form-label">Your Review</label>
+                <textarea required class="form-control p-2" id="review" name="review" placeholder="Write your review here..." rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-dark px-5 mb-3">Submit</button>
+            </form>
+          </div>
+          <hr>
+          <div  id="reviews">
+            <div class="">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="">Shahid Afridi</h6>
+                </div>
+                <div class="col-md-6">
+                  <p class="text-end">Time</p>
+                </div>
+              </div>
+              <hr class="my-2">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea ipsa totam quisquam recusandae officiis, voluptas delectus magnam veniam ab laboriosam.</p>
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
       
       <hr>
       <hr>
+
       <div class="row" id="two-articles"></div>
     </section>
     

@@ -14,14 +14,14 @@ fetch("../navbar.html")
                 navbarElement.innerHTML += `
                 
             <li class="nav-item">
-                <a class="nav-link "  href="./add_article.html">Add Article</a>
+                <a class="nav-link text-white "  href="./add_article.html">Add Article</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link "  href="./profile.html">Profile</a>
+            <a class="nav-link text-white "  href="./profile.html">Profile</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" onclick="handleLogout()"  href="#" >Logout</a>
+                <a class="nav-link text-white" onclick="handleLogout()"  href="#" >Logout</a>
             </li>
             `
             }
@@ -29,11 +29,11 @@ fetch("../navbar.html")
                 navbarElement.innerHTML += `
             
                 <li class="nav-item">
-                <a class="nav-link "  href="./profile.html">Profile</a>
+                <a class="nav-link text-white "  href="./profile.html">Profile</a>
                 </li>
     
                 <li class="nav-item">
-                    <a class="nav-link"  onclick="handleLogout()"  href="#" >Logout</a>
+                    <a class="nav-link text-white"  onclick="handleLogout()"  href="#" >Logout</a>
                 </li>
             
             `
@@ -48,10 +48,10 @@ fetch("../navbar.html")
         navbarElement.innerHTML += `
         
             <li class="nav-item">
-                <a class="nav-link" href="./login.html">Login</a>
+                <a class="nav-link text-white" href="./login.html">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./register.html">Register</a>
+                <a class="nav-link text-white" href="./register.html">Register</a>
             </li>
         
         `

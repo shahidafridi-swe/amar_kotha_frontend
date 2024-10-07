@@ -83,36 +83,32 @@ const handleAddArticle = async (event) => {
     })
     .catch(error => console.error('Error:', error));
 };
-
-
 const loadArticles = (value) => {
     fetch(`https://amar-kotha.onrender.com/categories/${value}/`)
-    .then((res)=>res.json())
-    .then((data)=> {
+    .then((res) => res.json())
+    .then((data) => {
         document.getElementById("category-title").innerText = data.name;
-    })
+    });
 
-
-    document.getElementById("nodata").innerText = ''
-    document.getElementById("articles-sector").innerHTML = ''
+    document.getElementById("nodata").innerText = '';
+    document.getElementById("articles-sector").innerHTML = '';
+    
     fetch(`https://amar-kotha.onrender.com/articles/?category_id=${value}`)
     .then((res) => res.json())
     .then((data) => {
-
-        if(data.length>0){
-            data.sort((a, b) => b.average_rating - a.average_rating);
+        if (data.length > 0) {
+            data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at) || b.average_rating - a.average_rating);
             displayArticles(data);
-
-          }
-          else{
-              document.getElementById("nodata").innerText = 'Sorry there are no articls for this category'
-            document.getElementById("articles-sector").innerHTML = ""
-          }
+        } else {
+            document.getElementById("nodata").innerText = 'Sorry there are no articles for this category';
+            document.getElementById("articles-sector").innerHTML = '';
+        }
     })
-    .catch((err) => console.log(err))
-  };
+    .catch((err) => console.log(err));
+};
 
 loadArticles('');
+
 
 const displayArticles = (articles) => {
   const parent = document.getElementById("articles-sector")
@@ -130,7 +126,7 @@ const displayArticles = (articles) => {
     const div = document.createElement("div")
     div.innerHTML = `
     
-    <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
+    <a href="article_Details.html?articleId=${article.id}" class="article-headline">
         <div class="article border border-dark rounded  my-2">
         <div class="row">
             <div class="col-md-3 d-flex align-items-center">

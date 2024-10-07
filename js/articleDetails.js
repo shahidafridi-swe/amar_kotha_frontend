@@ -31,18 +31,18 @@ const displayArticleDetails = (article) => {
             parent.innerHTML = `
                 <div class="border border-dark rounded">
           <div class="row">
-            <div class="col-md-5 pe-0 d-flex align-items-center">
+            <div class="col-md-5 pe-0 d-flex align-items-center ">
               ${article.image_url ? `<img src="${article.image_url}" alt="Article Image" class="w-100 rounded">` : `<img src="https://i.ibb.co/1MC5gDs/download.jpg" alt="Article Image" class="w-100 rounded">`}
             </div>
             <div class="col-md-7 ps-0 ">
-              <div class="bg-dark-subtle p-3 rounded">
+              <div class="bg-dark-subtle p-3 rounded ">
                 <h3 class="fw-bold">${article.headline}</h3>
                 <hr>
-                <div class="row text-dark">
+                <div class="row text-dark ">
                     <div class="col-md-4">
                         <p>Category: ${category.name}</p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 ">
                         <p>Published: ${createdAt}</p>
                     </div>
                     <div class="col-md-4">
@@ -51,7 +51,7 @@ const displayArticleDetails = (article) => {
                 </div>
             </div>
             
-            <p class="p-3">${article.body}</p>
+            <p class="p-3 bg-white rounded m-1">${article.body}</p>
             </div>
           </div>
         </div>
@@ -68,11 +68,14 @@ const displayArticleDetails = (article) => {
                         if (isEditor) {
                             parent.innerHTML += `
                                 <div class="p-2 border border-dark bg-dark-subtle rounded">
-                                    <button class="btn px-5 mx-2 btn-outline-dark" id="edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
-                                    <button class="btn px-5 mx-2 btn-outline-danger" id="delete-btn" onclick="deleteArticle()">Delete</button>
+                                    <button class="btn px-5 mx-2 btn-dark" id="edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">UPDATE</button>
+                                    <button class="btn px-5 mx-2 btn-danger" id="delete-btn" onclick="deleteArticle()">DELETE</button>
                                 </div>
                             `;
                             ratingSection.style.display = 'none';
+                            document.getElementById("review-section").style.display = 'none';
+                            document.getElementById("rating-message").style.display = 'none';
+
                         } else if (isViewer) {
                             fetch("https://amar-kotha.onrender.com/rating/")
                             .then((res)=>res.json())
@@ -120,7 +123,7 @@ const displayTwoArticles = () => {
                 div.classList.add("col-md-6");
                 div.innerHTML = `
                 <a href="article_Details.html?articleId=${article.id}"" class="article-headline">
-                    <div class="article border rounded">
+                    <div class="article border rounded two-article">
                         <div class="row">
                             <div class="col-md-3 d-flex align-items-center">
                             ${article.image_url ? `<img src="${article.image_url}" alt="Article Image" class="w-100 rounded">` : `<img src="https://i.ibb.co/1MC5gDs/download.jpg" alt="Article Image" class="w-100 rounded">`}
@@ -264,3 +267,97 @@ const handleAddRating = (event) => {
     })
     .catch((err) => console.error("Error submitting rating:", err));
 };
+
+
+const loadReviews = () => {
+    const articleId = new URLSearchParams(window.location.search).get("articleId");
+
+    fetch('https://amar-kotha.onrender.com/review/')
+    .then(res => res.json())
+    .then(data => {
+        const reviewsContainer = document.getElementById("reviews");
+
+        const filteredReviews = data.filter(review => review.article == articleId);
+        
+        if (filteredReviews.length === 0) {
+            reviewsContainer.innerHTML = `<h5>No Reviews...</h5>`;
+        } else {
+            let reviewsHTML = `<h5>${filteredReviews.length} Review${filteredReviews.length > 1 ? 's' : ''}</h5>`;
+
+            filteredReviews.forEach(review => {
+                reviewsHTML += `
+                    <div class="bg-white rounded p-3 m-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <h6 class="">${review.reviewer_name}</h6>
+                            </div>
+                            <div class="col-md-6">
+                           <p class="text-end m-0">
+                            <small class="text-end">${new Date(review.created_at).toLocaleString()}</small>
+                            </p>
+                            
+                            </div>
+                        </div>
+                        <hr class="my-1">
+                        <p class="m-0 p-3">${review.body}</p>
+                    </div>
+                    
+                `;
+            });
+
+            reviewsContainer.innerHTML = reviewsHTML;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching reviews:', error);
+        const reviewsContainer = document.getElementById("reviews");
+        reviewsContainer.innerHTML = `<h4>Error loading comments...</h4>`;
+    });
+};
+
+loadReviews();
+
+
+const handleAddReview = async (e) => {
+    e.preventDefault();
+    const articleId = new URLSearchParams(window.location.search).get("articleId");
+
+    const form = document.getElementById("review-form");
+    const formData = new FormData(form);
+    const token = localStorage.getItem("token")
+    const user_id = localStorage.getItem("user_id")
+
+    const reviewData = {
+        body: formData.get("review"),
+        user: parseInt(user_id),
+        article: parseInt(articleId)
+    }
+    console.log(reviewData)
+    fetch("https://amar-kotha.onrender.com/review/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+        },
+        body: JSON.stringify(reviewData)
+    })
+    .then((res) => {
+        if (!res.ok) {
+            return res.json().then((data) => {
+                throw new Error(data.detail || 'Failed to add review');
+            });
+        }
+        return res.json();
+    })
+    .then((data) => {
+        console.log('data->>', data);
+        alert("Review added successfully!");
+        window.location.href = `article_Details.html?articleId=${articleId}`;
+
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred while adding the review: " + error.message);
+    });
+}
+
