@@ -88,6 +88,7 @@ const loadArticles = (value) => {
     .then((res) => res.json())
     .then((data) => {
         document.getElementById("category-title").innerText = data.name;
+        document.getElementById("index-body").style.display = 'block';
     });
 
     document.getElementById("nodata").innerText = '';
@@ -96,6 +97,9 @@ const loadArticles = (value) => {
     fetch(`https://amar-kotha.onrender.com/articles/?category_id=${value}`)
     .then((res) => res.json())
     .then((data) => {
+        document.getElementById("loading").style.display = 'none';
+        document.getElementById("index-body").style.display = 'block';
+
         if (data.length > 0) {
             data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at) || b.average_rating - a.average_rating);
             displayArticles(data);
