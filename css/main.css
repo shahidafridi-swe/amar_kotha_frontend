@@ -56,3 +56,7 @@ a {
 #index-body{
   display: none;
 }
+
+#footer ::placeholder{
+  color : gray;
+}
